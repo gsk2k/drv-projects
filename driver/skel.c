@@ -17,14 +17,14 @@ MODULE_DESCRIPTION("V4L2 Skeleton Driver");
 MODULE_LICENSE("GPL");
 
 struct dev_data {
-	struct platform_device		*pdev;
+	struct platform_device	*pdev;
 	struct v4l2_device		v4l2_dev;
 	struct video_device		vdev;
 	struct mutex			mutex;
-	u32				pixelformat;
+	u32					pixelformat;
 	struct v4l2_fract		timeperframe;
-	spinlock_t			s_lock;
-	int				input;
+	spinlock_t				s_lock;
+	int					input;
 	unsigned int			f_count;
 	unsigned int			width, height, pixelsize;
 };
@@ -38,7 +38,7 @@ static struct platform_device p_device = {
 	.name		= KBUILD_MODNAME,
 	.id		= PLATFORM_DEVID_NONE,
 	.dev		= {
-		.release		= p_release,
+			.release		= p_release,
 	},
 };
 
@@ -104,7 +104,6 @@ static int vidioc_try_fmt_vid_cap(struct file *file, void *priv, struct v4l2_for
 	f->fmt.pix.pixelformat = dev->pixelformat = V4L2_PIX_FMT_NV12;
 	dev->pixelsize = 460800; //was 2
 	f->fmt.pix.colorspace = V4L2_COLORSPACE_SMPTE170M;
-
 	if ((f->fmt.pix.width != F_DATA.width) || (f->fmt.pix.height != F_DATA.height))
 		v4l2_info(&dev->v4l2_dev, "%s pixel width and height changed to default\n", __func__);
 
@@ -167,7 +166,6 @@ static int p_probe(struct platform_device *pdev)
 	dev->height = F_DATA.height;
 	dev->pixelsize = 460800; //was 2
 	dev->input = 0;
-	
 	
 	vdev = &dev->vdev;
 	strscpy(vdev->name, KBUILD_MODNAME, sizeof(vdev->name));
@@ -246,7 +244,6 @@ static int __init v4l2_init(void)
 static void __exit v4l2_exit(void)
 {
 	pr_info("%s: Removing V4L2 driver module\n", __func__);
-
 	platform_driver_unregister(&p_driver);
 	platform_device_unregister(&p_device);
 }

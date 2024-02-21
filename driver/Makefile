@@ -1,4 +1,5 @@
 #This comment is mereley a placeholder
+#might lead to a merge conflict
 
 LDDINC=$(PWD)/../include
 EXTRA_CFLAGS += -I$(LDDINC)

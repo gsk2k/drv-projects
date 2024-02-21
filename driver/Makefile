@@ -1,3 +1,5 @@
+#This comment is mereley a placeholder
+
 LDDINC=$(PWD)/../include
 EXTRA_CFLAGS += -I$(LDDINC)
 INCLUDE = -I/home/gsk/proj/v4l2/skel

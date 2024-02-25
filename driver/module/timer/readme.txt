@@ -25,4 +25,7 @@ Assignment was to identify as many weaknesses or bugs in the framework.
 
 Anything from logic errors to algorithmic limitations were fair game for identification.
 
-I have documented the errors I encountered and provided detailed descriptions of the fixes and optimizations in a file named "timer_qnx_fixes". The updated code can be found under the name "timer_gsk.c". Additionally, I have generated a performance profile for the code, and the relevant data is stored in the "perf.data" file - you can review the performance information by running the command 'perf report' in the same directory. For more low-level information, you can run 'perf script' in the same terminal.
+I have documented the errors I encountered and provided detailed descriptions of the fixes and optimizations in a file named "timer_qnx_fixes". 
+The updated code can be found under the name "timer_gsk.c". Additionally, I have generated a performance profile for the code, and the relevant 
+data is stored in the "perf.data" file - you can review the performance information by running the command 'perf report' in the same directory. 
+For more low-level information, you can run 'perf script' in the same terminal.

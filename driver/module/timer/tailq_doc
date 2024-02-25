@@ -1,0 +1,61 @@
+TAILQ_ENTRY(TYPE);
+TAILQ_HEAD(HEADNAME, TYPE);
+TAILQ_INIT(TAILQ_HEAD *head);
+TAILQ_INSERT_AFTER(TAILQ_HEAD *head, TYPE *listelm, TYPE *elm, TAILQ_ENTRY NAME);
+TAILQ_INSERT_HEAD(TAILQ_HEAD *head, TYPE *elm, TAILQ_ENTRY NAME);
+TAILQ_INSERT_TAIL(TAILQ_HEAD *head, TYPE *elm, TAILQ_ENTRY NAME);
+TAILQ_REMOVE(TAILQ_HEAD *head, TYPE *elm, TAILQ_ENTRY NAME);
+
+
+Tail queues
+
+A tail queue is headed by a structure defined by the TAILQ_HEAD macro. This structure contains a pair of pointers, one to the first element in the tail queue and the other to the last element in the tail queue. The elements are doubly linked so that an arbitrary element can be removed without traversing the tail queue. New elements can be added to the tail queue after an existing element, at the head of the tail queue, or at the end of the tail queue. A TAILQ_HEAD structure is declared as follows:
+
+    TAILQ_HEAD(HEADNAME, TYPE) head;
+
+where HEADNAME is the name of the structure to be defined, and TYPE is the type of the elements to be linked into the tail queue. A pointer to the head of the tail queue can later be declared as:
+
+    struct HEADNAME *headp;
+
+(The names head and headp are user selectable.)
+
+The macro TAILQ_ENTRY declares a structure that connects the elements in the tail queue.
+
+The macro TAILQ_INIT initializes the tail queue referenced by head.
+
+The macro TAILQ_INSERT_HEAD inserts the new element elm at the head of the tail queue.
+
+The macro TAILQ_INSERT_TAIL inserts the new element elm at the end of the tail queue.
+
+The macro TAILQ_INSERT_AFTER inserts the new element elm after the element listelm.
+
+The macro TAILQ_REMOVE removes the element elm from the tail queue.
+
+Tail queue example
+
+TAILQ_HEAD(tailhead, entry) head;
+struct tailhead *headp;                 /* Tail queue head. */
+struct entry {
+    ...
+    TAILQ_ENTRY(entry) entries;         /* Tail queue. */
+    ...
+} *n1, *n2, *np;
+
+TAILQ_INIT(&head);                      /* Initialize the queue. */
+
+n1 = malloc(sizeof(struct entry));      /* Insert at the head. */
+TAILQ_INSERT_HEAD(&head, n1, entries);
+
+n1 = malloc(sizeof(struct entry));      /* Insert at the tail. */
+TAILQ_INSERT_TAIL(&head, n1, entries);
+
+n2 = malloc(sizeof(struct entry));      /* Insert after. */
+TAILQ_INSERT_AFTER(&head, n1, n2, entries);
+                                        /* Forward traversal. */
+for (np = head.tqh_first; np != NULL; np = np->entries.tqe_next)
+    np-> ...
+                                        /* Delete. */
+while (head.tqh_first != NULL)
+    TAILQ_REMOVE(&head, head.tqh_first, entries);
+
+

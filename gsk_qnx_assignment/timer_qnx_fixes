@@ -1,0 +1,42 @@
+Error log:
+
+Declared below is the error I ran into as I ran the code without ANY modifications.
+
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c: In function ‘init_ticker’:
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c:170:5: warning: implicit declaration of function ‘signal’ [-Wimplicit-function-declaration]
+  170 |     signal(SIGALRM, clock_tick);
+      |     ^~~~~~
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c:170:12: error: ‘SIGALRM’ undeclared (first use in this function)
+  170 |     signal(SIGALRM, clock_tick);
+      |            ^~~~~~~
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c:170:12: note: each undeclared identifier is reported only once for each function it appears in
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c: In function ‘tcb’:
+/home/gsk/CLionProjects/nix_coding/cmake-build-debug/timer_qnx.c:181:33: warning: format ‘%llu’ expects argument of type ‘long long unsigned int’, but argument 2 has type ‘uint64_t’ {aka ‘long unsigned int’} [-Wformat=]
+  181 |     printf("Timer Callback : %llu\n", np->fire);
+      |                              ~~~^     ~~~~~~~~
+      |                                 |       |
+      |                                 |       uint64_t {aka long unsigned int}
+      |                                 long long unsigned int
+      |                              %lu
+make[3]: *** [CMakeFiles/nix_coding.dir/build.make:72: CMakeFiles/nix_coding.dir/timer_qnx.c.o] Error 1
+make[2]: *** [CMakeFiles/Makefile2:83: CMakeFiles/nix_coding.dir/all] Error 2
+make[1]: *** [CMakeFiles/Makefile2:90: CMakeFiles/nix_coding.dir/rule] Error 2
+make: *** [Makefile:124: nix_coding] Error 2
+
+
+Had to add the signal.h header in order to use signal() without which the code was not executing.
+Warning wrt signal() was also fixed.
+
+'fire' is a 64 byte long unsigned integer - changing '%llu' to '%lu' fixed the warning.
+
+Code optimizations that I implemented:
+
+Use msleep Instead of sleep:
+	Original Code: The original code used sleep with a resolution of 1 second, which might end up resulting in imprecise timer handling.
+	Updated Code: The updated code replaced sleep with a custom msleep function, allowing for millisecond-level precision - this was done just for the sake of granularity.
+	
+Removed Unused Definitions:
+	Original Code: The original code had unused definitions such as struct timer_node and enum timer_type.
+	Updated Code: The updated code removed these unused definitions to clean up the code, along with reducing the complexity of the main() fucntion.
+	
+
